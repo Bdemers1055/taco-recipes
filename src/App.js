@@ -18,8 +18,9 @@ componentDidMount() {
   this.fetchRandomTacoRecipe();
 };
 fetchRandomTacoRecipe() {
-  const mixin = '/sinker/tacofancy/master/mixins/sweet_potato_and_apple_hash.md';
-  const url = `https://taco-randomizer.herokuapp.com${mixin}`;
+  const { match } = this.props;
+  const mixin = `/sinker/tacofancy/master/mixins/${match.params.mixin}`;
+  const url = `https://raw.githubusercontent.com${mixin}`;
   axios.get(url).then((response) => {
     // console.log('success', response.data);
     this.setState({
@@ -35,7 +36,7 @@ render(){
   const {taco} = this.state;
   return (
     <section className="recipe">
-      <ReactMarkdown source={taco.recipe} />
+      <ReactMarkdown source={taco} />
     </section>
   );
 }
@@ -92,7 +93,7 @@ class App extends Component {
       <div className="app">
         <section className="recipe">
         <Route exact path='/' component={Home} />
-        <Route path='/sinker/tacofancy/master/mixins/:mixin' component={Mixins} />
+        <Route path='/mixins/:mixin' component={Mixins} />
         </section>
       </div>
     );
