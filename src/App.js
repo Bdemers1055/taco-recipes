@@ -17,7 +17,8 @@ componentDidMount() {
   this.fetchRandomTacoRecipe();
 };
 fetchRandomTacoRecipe() {
-  const url = 'http://taco-randomizer.herokuapp.com/random/?full-taco=true';
+  const random = '/random/?full-taco=true';
+  const url = `http://taco-randomizer.herokuapp.com${random}`;
   axios.get(url).then((response) => {
     // console.log('success', response.data);
     this.setState({
@@ -26,17 +27,20 @@ fetchRandomTacoRecipe() {
     });
   })
   .catch((error) => {
-    console.log('error');
+    console.log('error', error);
   })
 };
   render() {
     const {taco} = this.state;
     return (
-      <div className="App">
+      <div className="app">
+      <header className="header">
         <h1>Taco of the day</h1>
-        <button className="primaryBtn">TACO ME</button>
-        <h1 className="recipeTitle">{taco.name}</h1>
+        <button className="primaryBtn" onClick={this.fetchRandomTacoRecipe.bind(this)}><h1>TACO ME</h1></button>
+        </header>
+        <section className="recipe">
         <ReactMarkdown source={taco.recipe} />
+        </section>
       </div>
     );
   }
