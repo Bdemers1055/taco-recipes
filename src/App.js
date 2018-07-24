@@ -18,7 +18,7 @@ componentDidMount() {
 };
 fetchRandomTacoRecipe() {
   const random = '/random/?full-taco=true';
-  const url = `http://taco-randomizer.herokuapp.com${random}`;
+  const url = `https://taco-randomizer.herokuapp.com${random}`;
   axios.get(url).then((response) => {
     // console.log('success', response.data);
     this.setState({
