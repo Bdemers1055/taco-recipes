@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
+import { Link, Route } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
@@ -13,6 +14,16 @@ class App extends Component {
       input: '# This is a header\n\nAnd this is a paragraph',
     };
   }
+// route: '/Addons'
+const Addons = (props) => (
+  <ReactMarkdown source={taco.recipe} />
+);
+
+// route: '/'
+const Home = (props) => (
+  <ReactMarkdown source={taco.recipe} />
+);
+
 componentDidMount() {
   this.fetchRandomTacoRecipe();
 };
@@ -39,7 +50,8 @@ fetchRandomTacoRecipe() {
         <button className="primaryBtn" onClick={this.fetchRandomTacoRecipe.bind(this)}><h1>TACO ME</h1></button>
         </header>
         <section className="recipe">
-        <ReactMarkdown source={taco.recipe} />
+        <Route exact path='/' component={Home} />
+        <Route path='https://raw.github.com/sinker/tacofancy/master' component={Addons} />
         </section>
       </div>
     );
