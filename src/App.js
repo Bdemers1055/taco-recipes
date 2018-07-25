@@ -138,7 +138,8 @@ fetchRandomTacoRecipe() {
     });
   })
   .catch((error) => {
-    console.log('error', error);
+    // console.log('error', error);
+    alert('Oh no! something went wrong.', error);
   })
 };
 render(){
