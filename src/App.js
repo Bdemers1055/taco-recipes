@@ -4,6 +4,43 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 import './App.css';
 
+// route: '/Condiments'
+class Condiments extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      taco: {},
+      success: false,
+      error: null,
+    };
+  }
+  componentDidMount(){
+    this.fetchCondimentRecipe();
+  };
+  fetchCondimentRecipe() {
+    const { match } = this.props;
+    const condiment = `/sinker/tacofancy/master/condiments/${match.params.condiment}`;
+    const url = `https://raw.githubusercontent.com${condiment}`;
+    axios.get(url).then((response) => {
+      this.setState ({
+        taco: response.data,
+        success: true,
+      });
+    })
+    .catch((error) => {
+        console.log('error', error);
+    })
+  };
+  render(){
+    const {taco} = this.state;
+    return (
+      <section className="recip">
+      <ReactMarkdown source={taco} />
+      </section>
+    );
+  };
+}
+
 // route: '/Baselayers'
 class Baselayers extends Component {
   constructor(props){
@@ -128,6 +165,7 @@ class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/mixins/:mixin' component={Mixins} />
         <Route path='/base_layers/:baselayer' component={Baselayers} />
+        <Route path='/condiments/:condiment' component={Condiments} />
         </section>
       </div>
     );
