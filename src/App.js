@@ -4,6 +4,43 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 import './App.css';
 
+// route: '/Baselayers'
+class Baselayers extends Component {
+  constructor(props){
+    super(props);
+    this.state ={
+      taco: {},
+      success: false,
+      error: null,
+    };
+  }
+  componentDidMount(){
+   this.fetchBaseLayerRecipe();
+  };
+  fetchBaseLayerRecipe() {
+    const { match } = this.props;
+    const baselayer = `/sinker/tacofancy/master/base_layers/${match.params.baselayer}`;
+    const url = `https://raw.githubusercontent.com${baselayer}`;
+    axios.get(url).then((response) => {
+      this.setState({
+        taco: response.data,
+        success: true,
+      });
+      })
+      .catch((error) => {
+        console.log('error', error);
+      })
+    };
+    render(){
+      const {taco} = this.state;
+      return (
+        <section className="recipe">
+        <ReactMarkdown source={taco} />
+        </section>
+      );
+    }
+  }
+
 // route: '/Mixins'
 class Mixins extends Component {
   constructor(props){
@@ -15,14 +52,13 @@ class Mixins extends Component {
     };
   }
 componentDidMount() {
-  this.fetchRandomTacoRecipe();
+  this.fetchMixinRecipe();
 };
-fetchRandomTacoRecipe() {
+fetchMixinRecipe() {
   const { match } = this.props;
   const mixin = `/sinker/tacofancy/master/mixins/${match.params.mixin}`;
   const url = `https://raw.githubusercontent.com${mixin}`;
   axios.get(url).then((response) => {
-    // console.log('success', response.data);
     this.setState({
       taco: response.data,
       success: true,
@@ -42,8 +78,6 @@ render(){
 }
 }
 
-
-
 // route: '/'
 class Home extends Component {
   constructor(props){
@@ -61,7 +95,6 @@ fetchRandomTacoRecipe() {
   const random = '/random/?full-taco=true';
   const url = `https://taco-randomizer.herokuapp.com${random}`;
   axios.get(url).then((response) => {
-    // console.log('success', response.data);
     this.setState({
       taco: response.data,
       success: true,
@@ -94,6 +127,7 @@ class App extends Component {
         <section className="recipe">
         <Route exact path='/' component={Home} />
         <Route path='/mixins/:mixin' component={Mixins} />
+        <Route path='/base_layers/:baselayer' component={Baselayers} />
         </section>
       </div>
     );
